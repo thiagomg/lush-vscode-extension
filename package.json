@@ -1,0 +1,60 @@
+{
+  "name": "lush-lang",
+  "displayName": "Lua Shell (LuSH) Language Support for VS Code",
+  "description": "Syntax highlighting, IntelliSense, and snippets for the LuSH scripting language.",
+  "version": "0.1.0",
+  "publisher": "thiagomg",
+  "engines": {
+    "vscode": "^1.50.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thiagomg/lush-vscode-extension.git"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "extension.js",
+  "activationEvents": [
+    "onLanguage:lush"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "lush",
+        "aliases": [
+          "LuSH",
+          "lush"
+        ],
+        "extensions": [
+          ".lush",
+          ".lua"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "lush",
+        "scopeName": "source.lush",
+        "path": "./syntaxes/lush.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "lush",
+        "path": "./snippets/lush.code-snippets"
+      }
+    ]
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thiagomg/lush-vscode-extension/issues"
+  },
+  "homepage": "https://github.com/thiagomg/lush-vscode-extension#readme"
+}
