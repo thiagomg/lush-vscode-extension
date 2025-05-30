@@ -1,13 +1,11 @@
 const vscode = require('vscode');
 
 /**
- * Provide completion items for lush language.
+ * Provide completion items for LuSH language.
  * Suggest members only after the object and dot.
  */
 function provideCompletionItems(document, position) {
   const linePrefix = document.lineAt(position).text.substr(0, position.character);
-
-  // Basic patterns to detect: `env.`, `fs.`, `os.`, `files.`
 
   if (linePrefix.endsWith('env.')) {
     return [
@@ -39,7 +37,8 @@ function provideCompletionItems(document, position) {
       new vscode.CompletionItem('name', vscode.CompletionItemKind.Property),
       new vscode.CompletionItem('proc_names', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('proc_exes', vscode.CompletionItemKind.Function),
-      new vscode.CompletionItem('exec', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('pipe_exec', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('pipeline', vscode.CompletionItemKind.Function),
     ];
   }
 
@@ -52,13 +51,19 @@ function provideCompletionItems(document, position) {
     ];
   }
 
+  if (linePrefix.endsWith('net.')) {
+    return [
+      new vscode.CompletionItem('wget', vscode.CompletionItemKind.Function),
+    ];
+  }
+
   return undefined;
 }
 
 function activate(context) {
   context.subscriptions.push(
     vscode.languages.registerCompletionItemProvider(
-      'lush', // your language id
+      'lush',
       {
         provideCompletionItems,
       },
