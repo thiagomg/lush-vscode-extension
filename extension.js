@@ -17,6 +17,7 @@ function provideCompletionItems(document, position) {
       new vscode.CompletionItem('get', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('del', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('print', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('cwd', vscode.CompletionItemKind.Function),
     ];
   }
 
@@ -29,6 +30,9 @@ function provideCompletionItems(document, position) {
       new vscode.CompletionItem('move', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('rm', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('exists', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('parent', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('is_file', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('is_dir', vscode.CompletionItemKind.Function),
     ];
   }
 
@@ -54,6 +58,13 @@ function provideCompletionItems(document, position) {
   if (linePrefix.endsWith('net.')) {
     return [
       new vscode.CompletionItem('wget', vscode.CompletionItemKind.Function),
+    ];
+  }
+
+  if (linePrefix.endsWith('toml.')) {
+    return [
+      new vscode.CompletionItem('load_file', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('save_file', vscode.CompletionItemKind.Function),
     ];
   }
 

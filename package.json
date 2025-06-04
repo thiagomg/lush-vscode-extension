@@ -2,7 +2,7 @@
   "name": "lush-lang",
   "displayName": "Lua Shell (LuSH) Language Support for VS Code",
   "description": "Syntax highlighting, IntelliSense, and snippets for the LuSH scripting language.",
-  "version": "0.2.0",
+  "version": "0.8.0",
   "publisher": "thiagomg",
   "engines": {
     "vscode": "^1.50.0"
