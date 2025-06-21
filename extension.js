@@ -33,6 +33,8 @@ function provideCompletionItems(document, position) {
       new vscode.CompletionItem('parent', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('is_file', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('is_dir', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('read_file', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('write_file', vscode.CompletionItemKind.Function),
     ];
   }
 
@@ -62,6 +64,13 @@ function provideCompletionItems(document, position) {
   }
 
   if (linePrefix.endsWith('toml.')) {
+    return [
+      new vscode.CompletionItem('load_file', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('save_file', vscode.CompletionItemKind.Function),
+    ];
+  }
+
+  if (linePrefix.endsWith('json.')) {
     return [
       new vscode.CompletionItem('load_file', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('save_file', vscode.CompletionItemKind.Function),
