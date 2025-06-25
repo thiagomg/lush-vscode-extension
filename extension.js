@@ -11,7 +11,7 @@ function provideCompletionItems(document, position) {
     return [
       new vscode.CompletionItem('pushd', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('popd', vscode.CompletionItemKind.Function),
-      new vscode.CompletionItem('chdir', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('cd', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('pwd', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('set', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('get', vscode.CompletionItemKind.Function),
