@@ -45,6 +45,7 @@ function provideCompletionItems(document, position) {
       new vscode.CompletionItem('proc_exes', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('pipe_exec', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('pipeline', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('mkdtemp', vscode.CompletionItemKind.Function),
     ];
   }
 
@@ -65,6 +66,7 @@ function provideCompletionItems(document, position) {
 
   if (linePrefix.endsWith('toml.')) {
     return [
+      new vscode.CompletionItem('from_string', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('load_file', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('save_file', vscode.CompletionItemKind.Function),
     ];
@@ -72,8 +74,21 @@ function provideCompletionItems(document, position) {
 
   if (linePrefix.endsWith('json.')) {
     return [
+      new vscode.CompletionItem('from_string', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('load_file', vscode.CompletionItemKind.Function),
       new vscode.CompletionItem('save_file', vscode.CompletionItemKind.Function),
+    ];
+  }
+
+  if (linePrefix.endsWith('path.')) {
+    return [
+      new vscode.CompletionItem('join', vscode.CompletionItemKind.Function),
+    ];
+  }
+
+  if (linePrefix.endsWith('string.')) {
+    return [
+      new vscode.CompletionItem('split', vscode.CompletionItemKind.Function),
     ];
   }
 
