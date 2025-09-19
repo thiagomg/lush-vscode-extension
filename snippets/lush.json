@@ -1,0 +1,214 @@
+{
+  "String interpolation": {
+    "prefix": "print",
+    "body": [
+      "env.print(\"${1:message}: ${${2:variable}}\")"
+    ],
+    "description": "Print with string interpolation"
+  },
+  "Change directory": {
+    "prefix": "cd",
+    "body": [
+      "env.chdir(\"${1:path}\")"
+    ],
+    "description": "Change directory"
+  },
+  "Push directory": {
+    "prefix": "pushd",
+    "body": [
+      "env.pushd(\"${1:path}\")"
+    ],
+    "description": "Push directory onto stack"
+  },
+  "List files": {
+    "prefix": "ls",
+    "body": [
+      "local files = fs.ls(\"${1:.}\")",
+      "for _, file in ipairs(files) do",
+      "\tenv.print(file)",
+      "end"
+    ],
+    "description": "List directory contents"
+  },
+  "Read file": {
+    "prefix": "readfile",
+    "body": [
+      "local content = fs.read_file(\"${1:filename}\")",
+      "if content then",
+      "\tenv.print(content)",
+      "else",
+      "\tenv.print(\"File not found: ${1:filename}\")",
+      "end"
+    ],
+    "description": "Read file with error handling"
+  },
+  "Write file": {
+    "prefix": "writefile",
+    "body": [
+      "local success = fs.write_file(\"${1:filename}\", \"${2:content}\")",
+      "if success then",
+      "\tenv.print(\"File written successfully\")",
+      "else",
+      "\tenv.print(\"Failed to write file\")",
+      "end"
+    ],
+    "description": "Write file with error handling"
+  },
+  "Load JSON": {
+    "prefix": "loadjson",
+    "body": [
+      "local data = json.load_file(\"${1:filename.json}\")",
+      "env.print(data)"
+    ],
+    "description": "Load JSON file"
+  },
+  "Save JSON": {
+    "prefix": "savejson",
+    "body": [
+      "local data = { ${1:key} = \"${2:value}\" }",
+      "json.save_file(\"${3:filename.json}\", data)"
+    ],
+    "description": "Save data as JSON"
+  },
+  "Load TOML": {
+    "prefix": "loadtoml",
+    "body": [
+      "local config = toml.load_file(\"${1:config.toml}\")",
+      "env.print(config)"
+    ],
+    "description": "Load TOML configuration"
+  },
+  "Environment variable": {
+    "prefix": "getenv",
+    "body": [
+      "local value = env.get(\"${1:VAR_NAME}\")",
+      "if value then",
+      "\tenv.print(\"${1:VAR_NAME}: \" .. value)",
+      "else",
+      "\tenv.print(\"Environment variable ${1:VAR_NAME} not set\")",
+      "end"
+    ],
+    "description": "Get environment variable with check"
+  },
+  "Set environment variable": {
+    "prefix": "setenv",
+    "body": [
+      "env.set(\"${1:VAR_NAME}\", \"${2:value}\")",
+      "env.print(\"Set ${1:VAR_NAME} to ${2:value}\")"
+    ],
+    "description": "Set environment variable"
+  },
+  "File exists check": {
+    "prefix": "fileexists",
+    "body": [
+      "if fs.exists(\"${1:path}\") then",
+      "\tenv.print(\"File exists: ${1:path}\")",
+      "else",
+      "\tenv.print(\"File not found: ${1:path}\")",
+      "end"
+    ],
+    "description": "Check if file exists"
+  },
+  "Create directory": {
+    "prefix": "mkdir",
+    "body": [
+      "fs.mkdir(\"${1:directory_name}\")",
+      "env.print(\"Created directory: ${1:directory_name}\")"
+    ],
+    "description": "Create directory"
+  },
+  "Copy file": {
+    "prefix": "copyfile",
+    "body": [
+      "fs.copy(\"${1:source}\", \"${2:destination}\")",
+      "env.print(\"Copied ${1:source} to ${2:destination}\")"
+    ],
+    "description": "Copy file"
+  },
+  "Move file": {
+    "prefix": "movefile",
+    "body": [
+      "fs.move(\"${1:source}\", \"${2:destination}\")",
+      "env.print(\"Moved ${1:source} to ${2:destination}\")"
+    ],
+    "description": "Move file"
+  },
+  "Download file": {
+    "prefix": "wget",
+    "body": [
+      "local filename = net.wget(\"${1:url}\", \"${2:output_filename}\")",
+      "env.print(\"Downloaded: \" .. filename)"
+    ],
+    "description": "Download file with wget"
+  },
+  "Compress files": {
+    "prefix": "zip",
+    "body": [
+      "files.compress(\"${1:archive.zip}\", \"${2:file1}\", \"${3:file2}\")",
+      "env.print(\"Created archive: ${1:archive.zip}\")"
+    ],
+    "description": "Create compressed archive"
+  },
+  "String split": {
+    "prefix": "split",
+    "body": [
+      "local parts = string.split(\"${1:text}\", \"${2:,}\")",
+      "for _, part in ipairs(parts) do",
+      "\tenv.print(part)",
+      "end"
+    ],
+    "description": "Split string into parts"
+  },
+  "OS pipeline": {
+    "prefix": "pipeline",
+    "body": [
+      "local result = os.pipeline({",
+      "\t{\"${1:command}\", \"${2:arg}\"},",
+      "\t{${3:function_name}},",
+      "\t{\"${4:command2}\"}",
+      "})",
+      "env.print(result)"
+    ],
+    "description": "Create command pipeline"
+  },
+  "Shell execution": {
+    "prefix": "shell",
+    "body": [
+      "$> ${1:command} ${2:args} | `${3:function_name}` | ${4:command2}"
+    ],
+    "description": "Shell command execution with pipes"
+  },
+  "Temporary directory": {
+    "prefix": "tmpdir",
+    "body": [
+      "local temp_dir = os.mkdtemp()",
+      "env.print(\"Using temp directory: \" .. temp_dir)",
+      "${1:-- Use temp_dir here}",
+      "${2:-- Directory will be cleaned up automatically}"
+    ],
+    "description": "Create temporary directory"
+  },
+  "Process information": {
+    "prefix": "processes",
+    "body": [
+      "local processes = os.proc_names()",
+      "for pid, name in pairs(processes) do",
+      "\tenv.print(\"PID: \" .. pid .. \", Name: \" .. name)",
+      "end"
+    ],
+    "description": "List running processes"
+  },
+  "For each file": {
+    "prefix": "foreachfile",
+    "body": [
+      "local files = fs.ls(\"${1:.}\")",
+      "for _, file in ipairs(files) do",
+      "\tif fs.is_file(file) then",
+      "\t\tenv.print(\"Processing file: \" .. file)",
+      "\t\t${2:-- Process file here}",
+      "\tend",
+      "end"
+    ],
+    "description": "Iterate through files in directory"
+  }
+}

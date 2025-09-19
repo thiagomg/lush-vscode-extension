@@ -1,36 +1,49 @@
 {
-  "name": "lush-lang",
-  "displayName": "Lua Shell (LuSH) Language Support for VS Code",
-  "description": "Syntax highlighting, IntelliSense, and snippets for the LuSH scripting language.",
-  "version": "0.17.0",
-  "publisher": "thiagomg",
+  "name": "lush-language-support",
+  "displayName": "Lush Language Support",
+  "description": "Language support for Lush - Lua with extended functions",
+  "version": "0.17.1",
+  "publisher": "your-publisher-name",
   "engines": {
-    "vscode": "^1.50.0"
+    "vscode": "^1.74.0"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/thiagomg/lush-vscode-extension.git"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Snippets",
+    "Other"
   ],
-  "main": "extension.js",
+  "keywords": [
+    "lush",
+    "lua",
+    "scripting",
+    "file-system",
+    "shell"
+  ],
+  "main": "./out/extension.js",
   "activationEvents": [
-    "onLanguage:lush"
+    "onLanguage:lush",
+    "onLanguage:lua"
   ],
   "contributes": {
     "languages": [
       {
         "id": "lush",
         "aliases": [
-          "LuSH",
+          "Lush",
           "lush"
         ],
         "extensions": [
-          ".lush",
-          ".lua"
+          ".lush"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/lush-light.svg",
+          "dark": "./icons/lush-dark.svg"
+        }
       }
     ],
     "grammars": [
@@ -43,18 +56,52 @@
     "snippets": [
       {
         "language": "lush",
-        "path": "./snippets/lush.code-snippets"
+        "path": "./snippets/lush.json"
+      },
+      {
+        "language": "lua",
+        "path": "./snippets/lush.json"
+      }
+    ],
+    "configuration": {
+      "title": "Lush",
+      "properties": {
+        "lush.completion.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Lush function completion"
+        },
+        "lush.hover.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable hover documentation for Lush functions"
+        },
+        "lush.diagnostics.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Lush diagnostics and validation"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "lush.showDocumentation",
+        "title": "Show Lush Documentation",
+        "category": "Lush"
       }
     ]
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/thiagomg/lush-vscode-extension/issues"
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
   },
-  "homepage": "https://github.com/thiagomg/lush-vscode-extension#readme"
+  "extensionDependencies": [
+    "sumneko.lua"
+  ]
 }
