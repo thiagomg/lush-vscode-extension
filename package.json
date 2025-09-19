@@ -3,7 +3,7 @@
   "displayName": "Lua Shell (LuSH) Language Support for VS Code",
   "description": "Syntax highlighting, IntelliSense, and snippets for the LuSH scripting language.",
   "version": "0.17.1",
-  "publisher": "your-publisher-name",
+  "publisher": "thiagomg",
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -60,10 +60,6 @@
     "snippets": [
       {
         "language": "lush",
-        "path": "./snippets/lush.json"
-      },
-      {
-        "language": "lua",
         "path": "./snippets/lush.json"
       }
     ],

@@ -353,7 +353,13 @@ export class LushCompletionProvider implements vscode.CompletionItemProvider {
       
       if (moduleName in lushModules) {
         const completions = this.getModuleFunctionCompletions(moduleName, partialFunction);
-        // Return as CompletionList to have more control
+        
+        // For string module, don't return as CompletionList to allow other providers
+        if (moduleName === 'string') {
+          return completions; // Return array to allow merging with Lua string functions
+        }
+        
+        // For other modules, return as CompletionList to have more control
         return new vscode.CompletionList(completions, false);
       }
     } else {
@@ -437,7 +443,14 @@ export class LushCompletionProvider implements vscode.CompletionItemProvider {
         
         // Set a unique filter text to avoid conflicts
         item.filterText = `${moduleName}.${funcName}`;
-        item.sortText = funcName;
+        
+        // For string module, use special sort order to integrate with Lua functions
+        if (moduleName === 'string') {
+          item.sortText = 'lush_' + funcName; // This will group Lush functions together
+          item.detail = `(Lush) ${funcInfo.signature}`;
+        } else {
+          item.sortText = funcName;
+        }
         
         // Prevent showing the bare function name without parameters
         item.preselect = true;
@@ -498,29 +511,18 @@ export class LushHoverProvider implements vscode.HoverProvider {
 }
 
 export function activate(context: vscode.ExtensionContext) {
+  console.log('Lush extension starting activation...');
+  
   const completionProvider = new LushCompletionProvider();
   const hoverProvider = new LushHoverProvider();
   
   // Register for .lush files
-  const lushSelector = { language: 'lush', scheme: 'file' };
-  
   context.subscriptions.push(
-    // Lush file support
-    vscode.languages.registerCompletionItemProvider(lushSelector, completionProvider, '.'),
-    vscode.languages.registerHoverProvider(lushSelector, hoverProvider)
+    vscode.languages.registerCompletionItemProvider('lush', completionProvider, '.'),
+    vscode.languages.registerHoverProvider('lush', hoverProvider)
   );
   
-  // Optionally register for .lua files only if user has the setting enabled
-  const config = vscode.workspace.getConfiguration('lush');
-  if (config.get('enableInLuaFiles', false)) {
-    const luaSelector = { language: 'lua', scheme: 'file' };
-    context.subscriptions.push(
-      vscode.languages.registerCompletionItemProvider(luaSelector, completionProvider, '.'),
-      vscode.languages.registerHoverProvider(luaSelector, hoverProvider)
-    );
-  }
-  
-  console.log('Lush extension activated');
+  console.log('Lush extension activated successfully');
 }
 
 export function deactivate() {
