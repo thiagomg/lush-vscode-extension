@@ -1,7 +1,7 @@
 {
-  "name": "lush-language-support",
-  "displayName": "Lush Language Support",
-  "description": "Language support for Lush - Lua with extended functions",
+  "name": "lush-lang",
+  "displayName": "Lua Shell (LuSH) Language Support for VS Code",
+  "description": "Syntax highlighting, IntelliSense, and snippets for the LuSH scripting language.",
   "version": "0.17.1",
   "publisher": "your-publisher-name",
   "engines": {
@@ -25,8 +25,7 @@
   ],
   "main": "./out/extension.js",
   "activationEvents": [
-    "onLanguage:lush",
-    "onLanguage:lua"
+    "onLanguage:lush"
   ],
   "contributes": {
     "languages": [
@@ -43,6 +42,11 @@
         "icon": {
           "light": "./icons/lush-light.svg",
           "dark": "./icons/lush-dark.svg"
+        },
+        "lush.diagnostics.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Lush diagnostics and validation"
         }
       }
     ],

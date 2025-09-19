@@ -347,22 +347,35 @@ export class LushCompletionProvider implements vscode.CompletionItemProvider {
     const dotMatch = beforeCursor.match(/(\w+)\.(\w*)$/);
     
     if (dotMatch) {
+      // We're completing table.function - only show function completions
       const moduleName = dotMatch[1];
       const partialFunction = dotMatch[2];
       
       if (moduleName in lushModules) {
-        return this.getModuleFunctionCompletions(moduleName, partialFunction);
+        const completions = this.getModuleFunctionCompletions(moduleName, partialFunction);
+        // Return as CompletionList to have more control
+        return new vscode.CompletionList(completions, false);
       }
     } else {
-      // Top level completion - show module names
+      // We're completing at top level
       const wordMatch = beforeCursor.match(/(\w*)$/);
       if (wordMatch) {
         const partial = wordMatch[1];
-        return this.getModuleCompletions(partial);
+        
+        // Only show module completions if the partial matches a module name
+        // This prevents showing modules when user is typing other things
+        const moduleMatches = Object.keys(lushModules).some(moduleName => 
+          moduleName.startsWith(partial)
+        );
+        
+        if (moduleMatches && partial.length > 0) {
+          const completions = this.getModuleCompletions(partial);
+          return new vscode.CompletionList(completions, false);
+        }
       }
     }
     
-    return [];
+    return new vscode.CompletionList([], false);
   }
   
   private getModuleCompletions(partial: string): vscode.CompletionItem[] {
@@ -377,6 +390,8 @@ export class LushCompletionProvider implements vscode.CompletionItemProvider {
           command: 'editor.action.triggerSuggest',
           title: 'Trigger Suggest'
         };
+        // Set sort order to appear after function completions
+        item.sortText = 'z' + moduleName;
         completions.push(item);
       }
     }
@@ -413,12 +428,19 @@ export class LushCompletionProvider implements vscode.CompletionItemProvider {
         
         item.documentation = new vscode.MarkdownString(docString);
         
-        // Use snippet for insertion
+        // Use snippet for insertion - this should include the function call
         if (funcInfo.snippet) {
           item.insertText = new vscode.SnippetString(funcInfo.snippet);
         } else {
           item.insertText = funcName + '()';
         }
+        
+        // Set a unique filter text to avoid conflicts
+        item.filterText = `${moduleName}.${funcName}`;
+        item.sortText = funcName;
+        
+        // Prevent showing the bare function name without parameters
+        item.preselect = true;
         
         completions.push(item);
       }
@@ -482,18 +504,21 @@ export function activate(context: vscode.ExtensionContext) {
   // Register for .lush files
   const lushSelector = { language: 'lush', scheme: 'file' };
   
-  // Also register for .lua files to provide Lush completions in Lua files
-  const luaSelector = { language: 'lua', scheme: 'file' };
-  
   context.subscriptions.push(
     // Lush file support
     vscode.languages.registerCompletionItemProvider(lushSelector, completionProvider, '.'),
-    vscode.languages.registerHoverProvider(lushSelector, hoverProvider),
-    
-    // Lua file support (so users can use Lush functions in .lua files too)
-    vscode.languages.registerCompletionItemProvider(luaSelector, completionProvider, '.'),
-    vscode.languages.registerHoverProvider(luaSelector, hoverProvider)
+    vscode.languages.registerHoverProvider(lushSelector, hoverProvider)
   );
+  
+  // Optionally register for .lua files only if user has the setting enabled
+  const config = vscode.workspace.getConfiguration('lush');
+  if (config.get('enableInLuaFiles', false)) {
+    const luaSelector = { language: 'lua', scheme: 'file' };
+    context.subscriptions.push(
+      vscode.languages.registerCompletionItemProvider(luaSelector, completionProvider, '.'),
+      vscode.languages.registerHoverProvider(luaSelector, hoverProvider)
+    );
+  }
   
   console.log('Lush extension activated');
 }
