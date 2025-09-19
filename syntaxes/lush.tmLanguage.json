@@ -1,51 +1,148 @@
 {
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "LuSH",
   "scopeName": "source.lush",
+  "fileTypes": ["lush"],
   "patterns": [
     {
-      "name": "support.function.env.lush",
-      "match": "\\b(env\\.(pushd|popd|chdir|pwd|get|set|del|print))\\b"
+      "include": "source.lua"
     },
     {
-      "name": "support.function.files.lush",
-      "match": "\\b(files\\.(zip|unzip|compress|decompress))\\b"
+      "include": "#lush-modules"
     },
     {
-      "name": "support.function.fs.lush",
-      "match": "\\b(fs\\.(ls|mkdir|rmdir|copy|move|rm|exists))\\b"
+      "include": "#string-interpolation"
     },
     {
-      "name": "support.function.os.lush",
-      "match": "\\b(os\\.(name|proc_names|proc_exes|exec))\\b"
+      "include": "#shell-exec"
     },
     {
-      "name": "string.quoted.double.lush",
-      "begin": "\"",
-      "end": "\"",
+      "include": "#subshell-exec"
+    }
+  ],
+  "repository": {
+    "lush-modules": {
       "patterns": [
         {
-          "name": "constant.character.escape.lush",
-          "match": "\\\\."
+          "name": "support.type.lush.module",
+          "match": "\\b(env|files|fs|json|net|os|string|toml)(?=\\.)",
+          "captures": {
+            "1": {
+              "name": "support.type.lush.module"
+            }
+          }
+        },
+        {
+          "name": "support.function.lush",
+          "match": "\\b(env|files|fs|json|net|os|string|toml)\\.(cwd|pushd|popd|chdir|pwd|set|get|del|print|zip|unzip|compress|decompress|ls|mkdir|rmdir|copy|move|rm|exists|is_dir|is_file|parent|read_file|write_file|load_file|from_string|save_file|wget|name|proc_names|proc_exes|pipe_exec|pipeline|mkdtemp|split|startswith|endswith)\\b",
+          "captures": {
+            "1": {
+              "name": "support.type.lush.module"
+            },
+            "2": {
+              "name": "support.function.lush"
+            }
+          }
         }
       ]
     },
-    {
-      "name": "comment.line.double-dash.lush",
-      "match": "--.*$"
+    "string-interpolation": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.lush",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.lush",
+              "match": "\\\\."
+            },
+            {
+              "name": "constant.other.placeholder.lush",
+              "begin": "\\$\\{",
+              "end": "\\}",
+              "patterns": [
+                {
+                  "include": "source.lua"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
-    {
-      "name": "constant.numeric.lush",
-      "match": "\\b\\d+(\\.\\d+)?\\b"
+    "shell-exec": {
+      "patterns": [
+        {
+          "name": "meta.shell-exec.lush",
+          "begin": "^\\s*\\$>",
+          "end": "$",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.operator.shell-exec.lush"
+            }
+          },
+          "patterns": [
+            {
+              "name": "string.unquoted.shell-command.lush",
+              "match": "[^`|\\s]+"
+            },
+            {
+              "name": "support.function.lua-in-shell.lush",
+              "begin": "`",
+              "end": "`",
+              "patterns": [
+                {
+                  "include": "source.lua"
+                }
+              ]
+            },
+            {
+              "name": "keyword.operator.pipe.lush",
+              "match": "\\|"
+            }
+          ]
+        }
+      ]
     },
-    {
-      "name": "keyword.control.lush",
-      "match": "\\b(if|else|elseif|end|function|return|for|while|do|local|in|then|repeat|until|break|and|or|not)\\b"
-    },
-    {
-      "name": "variable.other.lush",
-      "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
+    "subshell-exec": {
+      "patterns": [
+        {
+          "name": "meta.subshell-exec.lush",
+          "begin": "\\$\\(",
+          "end": "\\)",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.operator.subshell-exec.lush"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "keyword.operator.subshell-exec.lush"
+            }
+          },
+          "patterns": [
+            {
+              "name": "string.unquoted.shell-command.lush",
+              "match": "[^`|\\s]+"
+            },
+            {
+              "name": "support.function.lua-in-shell.lush",
+              "begin": "`",
+              "end": "`",
+              "patterns": [
+                {
+                  "include": "source.lua"
+                }
+              ]
+            },
+            {
+              "name": "keyword.operator.pipe.lush",
+              "match": "\\|"
+            }
+          ]
+        }
+      ]
     }
-  ],
-  "repository": {},
-  "scopeName": "source.lush"
+  }
 }
