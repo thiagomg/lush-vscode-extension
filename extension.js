@@ -89,6 +89,8 @@ function provideCompletionItems(document, position) {
   if (linePrefix.endsWith('string.')) {
     return [
       new vscode.CompletionItem('split', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('startswith', vscode.CompletionItemKind.Function),
+      new vscode.CompletionItem('endswith', vscode.CompletionItemKind.Function),
     ];
   }
 
