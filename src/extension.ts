@@ -511,7 +511,7 @@ export class LushHoverProvider implements vscode.HoverProvider {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log('Lush extension starting activation...');
+  console.log('LuSH extension starting activation...');
   
   const completionProvider = new LushCompletionProvider();
   const hoverProvider = new LushHoverProvider();
@@ -522,9 +522,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.languages.registerHoverProvider('lush', hoverProvider)
   );
   
-  console.log('Lush extension activated successfully');
+  console.log('LuSH extension activated successfully');
 }
 
 export function deactivate() {
-  console.log('Lush extension deactivated');
+  console.log('LuSH extension deactivated');
 }

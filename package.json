@@ -32,7 +32,7 @@
       {
         "id": "lush",
         "aliases": [
-          "Lush",
+          "LuSH",
           "lush"
         ],
         "extensions": [
@@ -46,7 +46,7 @@
         "lush.diagnostics.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable Lush diagnostics and validation"
+          "description": "Enable LuSH diagnostics and validation"
         }
       }
     ],
@@ -64,30 +64,30 @@
       }
     ],
     "configuration": {
-      "title": "Lush",
+      "title": "LuSH",
       "properties": {
         "lush.completion.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable Lush function completion"
+          "description": "Enable LuSH function completion"
         },
         "lush.hover.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable hover documentation for Lush functions"
+          "description": "Enable hover documentation for LuSH functions"
         },
         "lush.diagnostics.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable Lush diagnostics and validation"
+          "description": "Enable LuSH diagnostics and validation"
         }
       }
     },
     "commands": [
       {
         "command": "lush.showDocumentation",
-        "title": "Show Lush Documentation",
-        "category": "Lush"
+        "title": "Show LuSH Documentation",
+        "category": "LuSH"
       }
     ]
   },
